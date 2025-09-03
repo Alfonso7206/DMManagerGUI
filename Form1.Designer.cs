@@ -25,9 +25,10 @@
             this.txtArgs = new System.Windows.Forms.TextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.btnListClear = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblResetArgs = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.cmbFormato = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -166,7 +167,7 @@
             this.txtArgs.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.txtArgs.Location = new System.Drawing.Point(12, 155);
             this.txtArgs.Name = "txtArgs";
-            this.txtArgs.Size = new System.Drawing.Size(557, 25);
+            this.txtArgs.Size = new System.Drawing.Size(417, 25);
             this.txtArgs.TabIndex = 13;
             // 
             // toolTip1
@@ -183,15 +184,15 @@
             this.btnListClear.Text = "Clear list";
             this.btnListClear.Click += new System.EventHandler(this.btnListClear_Click);
             // 
-            // label1
+            // lblResetArgs
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(574, 161);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(19, 13);
-            this.label1.TabIndex = 15;
-            this.label1.Text = "🔄";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
+            this.lblResetArgs.AutoSize = true;
+            this.lblResetArgs.Location = new System.Drawing.Point(574, 161);
+            this.lblResetArgs.Name = "lblResetArgs";
+            this.lblResetArgs.Size = new System.Drawing.Size(19, 13);
+            this.lblResetArgs.TabIndex = 15;
+            this.lblResetArgs.Text = "🔄";
+            this.lblResetArgs.Click += new System.EventHandler(this.label1_Click);
             // 
             // groupBox1
             // 
@@ -215,12 +216,24 @@
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
+            // cmbFormato
+            // 
+            this.cmbFormato.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbFormato.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.cmbFormato.FormattingEnabled = true;
+            this.cmbFormato.Location = new System.Drawing.Point(435, 155);
+            this.cmbFormato.Name = "cmbFormato";
+            this.cmbFormato.Size = new System.Drawing.Size(133, 25);
+            this.cmbFormato.TabIndex = 18;
+            this.cmbFormato.SelectedIndexChanged += new System.EventHandler(this.cmbFormato_SelectedIndexChanged);
+            // 
             // Form1
             // 
             this.ClientSize = new System.Drawing.Size(679, 501);
+            this.Controls.Add(this.cmbFormato);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lblResetArgs);
             this.Controls.Add(this.btnListClear);
             this.Controls.Add(this.txtArgs);
             this.Controls.Add(this.chkPlaylist);
@@ -263,8 +276,9 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.ComponentModel.IContainer components;
         private System.Windows.Forms.Button btnListClear;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblResetArgs;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.ComboBox cmbFormato;
     }
 }

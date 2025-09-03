@@ -44,6 +44,13 @@ namespace WindowsFormsApp4
             DMListBox.ContextMenuStrip = menu;
             DMListBox.SelectionMode = SelectionMode.MultiExtended;
             this.FormClosing += Form1_FormClosing; // <- associa l'evento
+            // 🔹 ComboBox Arguments
+            cmbFormato.Items.Add("Video MP4");
+            cmbFormato.Items.Add("Solo Video");
+            cmbFormato.Items.Add("Audio MP3");
+            cmbFormato.Items.Add("Audio M4A");
+            cmbFormato.SelectedIndex = 0; // default Video MP4
+            // 🔹 ComboBox Arguments fine
         }
         private void SalvaLink()
         {
@@ -173,7 +180,12 @@ namespace WindowsFormsApp4
             lblProgress.Invoke((Action)(() => lblProgress.Text = "In preparazione..."));
 
             string fileOutput = Path.Combine(downloadFolder, "%(title)s.%(ext)s");
-            string args = $"\"{url}\" -o \"{fileOutput}\"";
+            // Cartella temporanea di Windows per i .part
+            //string tempFolder = Path.GetTempPath();
+
+            // Base args
+            //string args = $"\"{url}\" -o \"{fileOutput}\" -P \"temp:{tempFolder}\"";
+            string args = $"\"{url}\" -o \"{fileOutput}\" --no-part --no-overwrites --continue";
 
             if (isPlaylist)
                 args += " --yes-playlist";
@@ -391,5 +403,29 @@ private void btnSelezionaCartella_Click(object sender, EventArgs e)
                 MessageBox.Show("Errore: " + ex.Message);
             }
         }
+
+            private void cmbFormato_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (cmbFormato.SelectedItem.ToString())
+            {
+                case "Video MP4":
+                    txtArgs.Text = "-f bestvideo[ext=mp4][vcodec^=avc]+bestaudio[ext=m4a]/bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio/best[ext=mp4]/best";
+                    break;
+
+                case "Solo Video":
+                    txtArgs.Text = "-f bestvideo[ext=mp4][vcodec^=avc]/bestvideo[ext=mp4]/bestvideo";
+                    break;
+
+                case "Audio MP3":
+                    txtArgs.Text = "-x --audio-format mp3 --audio-quality 192 --embed-thumbnail";
+                    break;
+
+                case "Audio M4A":
+                    txtArgs.Text = "-f bestaudio --embed-thumbnail";
+                    break;
+            }
+        }
+
+
     }
-}
+    }
