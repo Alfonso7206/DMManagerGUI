@@ -34,7 +34,7 @@
             this.aggiornaYtdlp = new System.Windows.Forms.ToolStripMenuItem();
             this.infoYtdlp = new System.Windows.Forms.ToolStripMenuItem();
             this.mostraFormati = new System.Windows.Forms.ToolStripMenuItem();
-            this.scaricaBinary = new System.Windows.Forms.ToolStripMenuItem();
+            this.BtnScaricaTool = new System.Windows.Forms.ToolStripMenuItem();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -257,7 +257,7 @@
             this.aggiornaYtdlp,
             this.infoYtdlp,
             this.mostraFormati,
-            this.scaricaBinary});
+            this.BtnScaricaTool});
             this.MSAggiornaYtdlp.Name = "MSAggiornaYtdlp";
             this.MSAggiornaYtdlp.Size = new System.Drawing.Size(89, 20);
             this.MSAggiornaYtdlp.Text = "Opzioni Extra";
@@ -283,12 +283,12 @@
             this.mostraFormati.Text = "Mostra Formati";
             this.mostraFormati.Click += new System.EventHandler(this.mostraFormati_Click);
             // 
-            // scaricaBinary
+            // BtnScaricaTool
             // 
-            this.scaricaBinary.Name = "scaricaBinary";
-            this.scaricaBinary.Size = new System.Drawing.Size(180, 22);
-            this.scaricaBinary.Text = "Scarica Binary";
-            this.scaricaBinary.Click += new System.EventHandler(this.scaricaBinary_Click);
+            this.BtnScaricaTool.Name = "BtnScaricaTool";
+            this.BtnScaricaTool.Size = new System.Drawing.Size(180, 22);
+            this.BtnScaricaTool.Text = "Scarica Binary";
+            this.BtnScaricaTool.Click += new System.EventHandler(this.BtnScaricaTool_Click);
             // 
             // progressBar1
             // 
@@ -362,7 +362,7 @@
         private System.Windows.Forms.ToolStripMenuItem aggiornaYtdlp;
         private System.Windows.Forms.ToolStripMenuItem infoYtdlp;
         private System.Windows.Forms.ToolStripMenuItem mostraFormati;
-        private System.Windows.Forms.ToolStripMenuItem scaricaBinary;
+        private System.Windows.Forms.ToolStripMenuItem BtnScaricaTool;
         private System.Windows.Forms.ProgressBar progressBar1;
     }
 }

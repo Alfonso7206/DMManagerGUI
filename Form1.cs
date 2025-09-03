@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Management;
 using System.Net.Http;
-using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -546,14 +545,19 @@ private void btnSelezionaCartella_Click(object sender, EventArgs e)
                     byte[] buffer = new byte[8192];
                     long totalRead = 0;
                     int read;
+                    int barWidth = 20; // lunghezza barra
+
                     while ((read = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
                     {
                         await fs.WriteAsync(buffer, 0, read);
                         totalRead += read;
+
                         if (canReportProgress)
                         {
                             int percent = (int)((totalRead * 100) / totalBytes);
-                            lbl.Text = $"Scaricando {Path.GetFileName(outputPath)}: {percent}%";
+                            int progressBars = (percent * barWidth) / 100;
+                            string bar = "[" + new string('#', progressBars) + new string('-', barWidth - progressBars) + $"] {percent}%";
+                            lbl.Text = $"Scaricando {Path.GetFileName(outputPath)} {bar}";
                             lbl.Refresh();
                         }
                     }
@@ -561,8 +565,9 @@ private void btnSelezionaCartella_Click(object sender, EventArgs e)
             }
         }
 
-        private async void scaricaBinary_Click(object sender, EventArgs e)
 
+
+        private async void BtnScaricaTool_Click(object sender, EventArgs e)
         {
             string appPath = Application.StartupPath;
             string ytDlpUrl = "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe";
@@ -575,21 +580,30 @@ private void btnSelezionaCartella_Click(object sender, EventArgs e)
 
             try
             {
-                // 🔹 Cancella tutti i file esistenti
+                // Cancella file esistenti
                 if (File.Exists(ytPath)) File.Delete(ytPath);
                 if (File.Exists(ffmpegExePath)) File.Delete(ffmpegExePath);
                 if (File.Exists(ffprobeExePath)) File.Delete(ffprobeExePath);
                 if (File.Exists(ffZipPath)) File.Delete(ffZipPath);
 
-                // 🔹 Scarica yt-dlp
-                lblProgress.Text = "Scaricando yt-dlp...";
-                await DownloadFileAsync(ytDlpUrl, ytPath, lblProgress);
+                // Lista dei file da scaricare
+                var filesToDownload = new List<(string url, string path)>
+        {
+            (ytDlpUrl, ytPath),
+            (ffmpegZipUrl, ffZipPath)
+        };
 
-                // 🔹 Scarica ffmpeg.zip
-                lblProgress.Text = "Scaricando ffmpeg...";
-                await DownloadFileAsync(ffmpegZipUrl, ffZipPath, lblProgress);
+                int currentFile = 1;
+                int totalFiles = filesToDownload.Count;
 
-                // 🔹 Estrai ffmpeg.exe e ffprobe.exe
+                foreach (var file in filesToDownload)
+                {
+                    lblProgress.Text = $"Scaricando file {currentFile}/{totalFiles}: {Path.GetFileName(file.path)}";
+                    await DownloadFileAsync(file.url, file.path, lblProgress);
+                    currentFile++;
+                }
+
+                // Estrai solo ffmpeg.exe e ffprobe.exe
                 lblProgress.Text = "Estrazione ffmpeg.exe e ffprobe.exe...";
                 using (ZipArchive archive = ZipFile.OpenRead(ffZipPath))
                 {
@@ -599,12 +613,12 @@ private void btnSelezionaCartella_Click(object sender, EventArgs e)
                             entry.Name.Equals("ffprobe.exe", StringComparison.OrdinalIgnoreCase))
                         {
                             string destinationPath = Path.Combine(appPath, entry.Name);
-                            entry.ExtractToFile(destinationPath, true); // sovrascrive se esiste
+                            entry.ExtractToFile(destinationPath, true);
                         }
                     }
                 }
 
-                // 🔹 Cancella il file ZIP
+                // Cancella il file ZIP
                 if (File.Exists(ffZipPath)) File.Delete(ffZipPath);
 
                 lblProgress.Text = "Download completato!";
@@ -626,7 +640,11 @@ private void btnSelezionaCartella_Click(object sender, EventArgs e)
         }
 
     }
+
 }
+
+
+
         
         
     
