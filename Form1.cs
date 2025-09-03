@@ -421,7 +421,7 @@ private void btnSelezionaCartella_Click(object sender, EventArgs e)
                     break;
 
                 case "Audio M4A":
-                    txtArgs.Text = "-f bestaudio --embed-thumbnail";
+                    txtArgs.Text = "-f bestaudio[ext=m4a] --embed-thumbnail";
                     break;
             }
         }
