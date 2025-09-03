@@ -1,5 +1,6 @@
 
-<img width="772" height="972" alt="DMManagerGUI" src="https://github.com/user-attachments/assets/05578dc8-ce9a-4fc4-ae38-156f59616871" />
+<img width="764" height="999" alt="DMManagerGUI" src="https://github.com/user-attachments/assets/eaafe951-7b08-4c2e-b20f-2714a185d294" />
+
 
 #### Created with Visual Studio 2022 ####
 #### Simple download manager using yt-dlp ####
