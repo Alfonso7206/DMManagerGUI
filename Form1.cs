@@ -5,10 +5,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Management;
+using System.Net.Http;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO.Compression;
 
 namespace WindowsFormsApp4
 {
@@ -426,6 +428,206 @@ private void btnSelezionaCartella_Click(object sender, EventArgs e)
             }
         }
 
+        private void aggiornaYtdlpToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string command = "yt-dlp.exe -U";
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "cmd.exe",
+                    Arguments = "/c " + command,
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Errore durante l'aggiornamento: " + ex.Message);
+            }
+        }
+
+        private void MSInfoYtdlp_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void menuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtArgs_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void chkPlaylist_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblDownloadPath_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtUrl_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void infoYtdlp_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string command = "yt-dlp.exe --help & pause";
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "cmd.exe",
+                    Arguments = "/c " + command,
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Errore nell'aprire l'help: " + ex.Message);
+            }
+        }
+
+        private void mostraFormati_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string url = txtUrl.Text.Trim(); // prendi l'URL dalla TextBox
+                if (string.IsNullOrEmpty(url))
+                {
+                    MessageBox.Show("Inserisci un URL valido nella casella URL.");
+                    return;
+                }
+
+                string ytDlpPath = Path.Combine(Application.StartupPath, "yt-dlp.exe");
+                if (!File.Exists(ytDlpPath))
+                {
+                    MessageBox.Show("Non ho trovato yt-dlp.exe nella cartella dell'app.");
+                    return;
+                }
+
+                // Comando per mostrare i formati e aggiunge pausa
+                string command = $"\"{ytDlpPath}\" -F {url} & pause";
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "cmd.exe",
+                    Arguments = "/c " + command,
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Errore nel mostrare i formati: " + ex.Message);
+            }
+        }
+        private async Task DownloadFileAsync(string url, string outputPath, Label lbl)
+        {
+            using (HttpClient client = new HttpClient())
+            using (var response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead))
+            {
+                response.EnsureSuccessStatusCode();
+                var totalBytes = response.Content.Headers.ContentLength ?? -1L;
+                bool canReportProgress = totalBytes != -1 && lbl != null;
+
+                using (var stream = await response.Content.ReadAsStreamAsync())
+                using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write, FileShare.None))
+                {
+                    byte[] buffer = new byte[8192];
+                    long totalRead = 0;
+                    int read;
+                    while ((read = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                    {
+                        await fs.WriteAsync(buffer, 0, read);
+                        totalRead += read;
+                        if (canReportProgress)
+                        {
+                            int percent = (int)((totalRead * 100) / totalBytes);
+                            lbl.Text = $"Scaricando {Path.GetFileName(outputPath)}: {percent}%";
+                            lbl.Refresh();
+                        }
+                    }
+                }
+            }
+        }
+
+        private async void scaricaBinary_Click(object sender, EventArgs e)
+
+        {
+            string appPath = Application.StartupPath;
+            string ytDlpUrl = "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe";
+            string ffmpegZipUrl = "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip";
+
+            string ytPath = Path.Combine(appPath, "yt-dlp.exe");
+            string ffZipPath = Path.Combine(appPath, "ffmpeg.zip");
+            string ffmpegExePath = Path.Combine(appPath, "ffmpeg.exe");
+            string ffprobeExePath = Path.Combine(appPath, "ffprobe.exe");
+
+            try
+            {
+                // 🔹 Cancella tutti i file esistenti
+                if (File.Exists(ytPath)) File.Delete(ytPath);
+                if (File.Exists(ffmpegExePath)) File.Delete(ffmpegExePath);
+                if (File.Exists(ffprobeExePath)) File.Delete(ffprobeExePath);
+                if (File.Exists(ffZipPath)) File.Delete(ffZipPath);
+
+                // 🔹 Scarica yt-dlp
+                lblProgress.Text = "Scaricando yt-dlp...";
+                await DownloadFileAsync(ytDlpUrl, ytPath, lblProgress);
+
+                // 🔹 Scarica ffmpeg.zip
+                lblProgress.Text = "Scaricando ffmpeg...";
+                await DownloadFileAsync(ffmpegZipUrl, ffZipPath, lblProgress);
+
+                // 🔹 Estrai ffmpeg.exe e ffprobe.exe
+                lblProgress.Text = "Estrazione ffmpeg.exe e ffprobe.exe...";
+                using (ZipArchive archive = ZipFile.OpenRead(ffZipPath))
+                {
+                    foreach (var entry in archive.Entries)
+                    {
+                        if (entry.Name.Equals("ffmpeg.exe", StringComparison.OrdinalIgnoreCase) ||
+                            entry.Name.Equals("ffprobe.exe", StringComparison.OrdinalIgnoreCase))
+                        {
+                            string destinationPath = Path.Combine(appPath, entry.Name);
+                            entry.ExtractToFile(destinationPath, true); // sovrascrive se esiste
+                        }
+                    }
+                }
+
+                // 🔹 Cancella il file ZIP
+                if (File.Exists(ffZipPath)) File.Delete(ffZipPath);
+
+                lblProgress.Text = "Download completato!";
+                //MessageBox.Show(
+                //    $"Download completato!\n\n" +
+                //    $"yt-dlp: {ytPath}\n" +
+                //    $"ffmpeg: {ffmpegExePath}\n" +
+                //    $"ffprobe: {ffprobeExePath}",
+                //    "Download completato",
+                //    MessageBoxButtons.OK,
+                //    MessageBoxIcon.Information
+                //);
+            }
+            catch (Exception ex)
+            {
+                lblProgress.Text = "Errore durante il download.";
+                MessageBox.Show("Errore: " + ex.Message, "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
     }
-    }
+}
+        
+        
+    
+    
