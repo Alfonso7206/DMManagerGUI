@@ -20,12 +20,12 @@
             // flowPanel
             // 
             this.flowPanel.AutoScroll = true;
-            this.flowPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flowPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowPanel.Location = new System.Drawing.Point(0, 0);
             this.flowPanel.Margin = new System.Windows.Forms.Padding(2);
             this.flowPanel.Name = "flowPanel";
-            this.flowPanel.Size = new System.Drawing.Size(769, 390);
+            this.flowPanel.Size = new System.Drawing.Size(769, 409);
             this.flowPanel.TabIndex = 0;
             this.flowPanel.WrapContents = false;
             this.flowPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.flowPanel_Paint);
@@ -34,7 +34,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(769, 354);
+            this.ClientSize = new System.Drawing.Size(769, 409);
             this.Controls.Add(this.flowPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Margin = new System.Windows.Forms.Padding(2);

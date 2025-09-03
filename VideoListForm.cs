@@ -111,21 +111,23 @@ namespace WindowsFormsApp4
 
         private async Task MostraVideoAsync(dynamic videoInfo)
         {
-            // Pulisce il pannello principale
             flowPanel.Controls.Clear();
 
-            // Miniatura
-            string thumbUrl = videoInfo.thumbnail_maxres ?? videoInfo.thumbnail ?? null;
+            // Scarica miniatura
+            string thumbUrl = videoInfo.thumbnail_maxres != null ? (string)videoInfo.thumbnail_maxres
+                            : videoInfo.thumbnail != null ? (string)videoInfo.thumbnail
+                            : null;
             Image thumbnail = await ScaricaMiniaturaAsync(thumbUrl);
 
             Panel videoPanel = new Panel
             {
                 Width = 765,
-                Height = 350,
+                Height = 400,
                 BorderStyle = BorderStyle.FixedSingle,
                 Margin = new Padding(2)
             };
 
+            // PictureBox miniatura
             PictureBox pb = new PictureBox
             {
                 Image = thumbnail,
@@ -134,42 +136,79 @@ namespace WindowsFormsApp4
                 Height = 250,
                 Location = new Point(2, 2)
             };
+            videoPanel.Controls.Add(pb);
 
-            // Calcolo data upload
-            string uploadDateText = "N/D";
-            if (videoInfo.upload_date != null)
+            // ListBox formati sotto la miniatura
+            ListBox lstFormati = new ListBox
             {
-                string dateStr = videoInfo.upload_date;
-                if (dateStr.Length == 8)
-                    uploadDateText = DateTime.ParseExact(dateStr, "yyyyMMdd", null).ToString("dd/MM/yyyy");
-            }
+                Width = 350,
+                Height = 120,
+                Location = new Point(2, 260),
+                Font = new Font("Courier New", 9)
+            };
 
-            // Panel info
+            if (videoInfo.formats != null)
+            {
+                foreach (var fmt in videoInfo.formats)
+                {
+                    string formatId = fmt.format_id != null ? (string)fmt.format_id : "";
+                    string ext = fmt.ext != null ? (string)fmt.ext : "";
+                    string note = fmt.format_note != null ? (string)fmt.format_note : "";
+                    long filesizeBytes = fmt.filesize != null ? (long)fmt.filesize : 0;
+
+                    // Converte in MB/GB
+                    string sizeText;
+                    if (filesizeBytes >= 1073741824) // >= 1 GB
+                        sizeText = (filesizeBytes / 1073741824.0).ToString("0.##") + " GB";
+                    else if (filesizeBytes >= 1048576) // >= 1 MB
+                        sizeText = (filesizeBytes / 1048576.0).ToString("0.##") + " MB";
+                    else if (filesizeBytes >= 1024) // >= 1 KB
+                        sizeText = (filesizeBytes / 1024.0).ToString("0.##") + " KB";
+                    else
+                        sizeText = filesizeBytes + " B";
+
+                    string line = $"{formatId,-6} {ext,-5} {note,-15} {sizeText}";
+                    lstFormati.Items.Add(line);
+                }
+            }
+            else
+            {
+                lstFormati.Items.Add("Nessun formato trovato");
+            }
+            videoPanel.Controls.Add(lstFormati);
+
+            // Info e descrizione a destra
             Panel infoPanel = new Panel
             {
-                Location = new Point(360, 10),
+                Location = new Point(360, 2),
                 Width = 400,
-                Height = 320
+                Height = 380
             };
+
+            // Info principali
+            string uploadDateText = "N/D";
+            string uploadDateStr = videoInfo.upload_date != null ? (string)videoInfo.upload_date : null;
+            if (!string.IsNullOrEmpty(uploadDateStr) && uploadDateStr.Length == 8)
+                uploadDateText = DateTime.ParseExact(uploadDateStr, "yyyyMMdd", null).ToString("dd/MM/yyyy");
 
             Label lblInfo = new Label
             {
                 AutoSize = false,
                 Width = 400,
                 Height = 160,
-                Font = new Font("Segoe UI", 10, FontStyle.Regular),
+                Font = new Font("Segoe UI", 10),
                 Text =
-                    $"🎬 Titolo: {videoInfo.title ?? "N/D"}\n" +
-                    $"👤 Uploader: {videoInfo.uploader ?? "N/D"}\n" +
+                    $"🎬 Titolo: {(videoInfo.title != null ? (string)videoInfo.title : "N/D")}\n" +
+                    $"👤 Uploader: {(videoInfo.uploader != null ? (string)videoInfo.uploader : "N/D")}\n" +
                     $"📅 Data upload: {uploadDateText}\n" +
-                    $"⏱ Durata: {videoInfo.duration_string ?? "N/D"}\n" +
-                    $"👁 Views: {videoInfo.view_count ?? "0"}\n" +
-                    $"👍 Like: {videoInfo.like_count ?? "0"}\n" +
-                    $"💬 Commenti: {videoInfo.comment_count ?? "0"}"
+                    $"⏱ Durata: {(videoInfo.duration_string != null ? (string)videoInfo.duration_string : "N/D")}\n" +
+                    $"👁 Views: {(videoInfo.view_count != null ? videoInfo.view_count.ToString() : "0")}\n" +
+                    $"👍 Like: {(videoInfo.like_count != null ? videoInfo.like_count.ToString() : "0")}\n" +
+                    $"💬 Commenti: {(videoInfo.comment_count != null ? videoInfo.comment_count.ToString() : "0")}"
             };
 
-            // Link cliccabile sicuro
-            string linkUrl = videoInfo.webpage_url ?? string.Empty;
+            // Link cliccabile
+            string linkUrl = videoInfo.webpage_url != null ? (string)videoInfo.webpage_url : "";
             LinkLabel link = new LinkLabel
             {
                 Text = linkUrl,
@@ -184,25 +223,23 @@ namespace WindowsFormsApp4
                     ApriLink(linkUrl);
             };
 
-            // FastColoredTextBox per descrizione
+            // FastColoredTextBox descrizione
             var fctbDescription = new FastColoredTextBox
             {
                 Multiline = true,
                 ReadOnly = true,
                 Width = 400,
-                Height = 100,
+                Height = 200,
                 Location = new Point(0, 200),
                 Font = new Font("Consolas", 9),
-                Text = videoInfo.description ?? "N/D",
+                Text = videoInfo.description != null ? (string)videoInfo.description : "N/D",
                 Language = Language.Custom,
                 WordWrap = true,
                 BackColor = Color.White
             };
 
-            // Styles per link e tag
             var linkStyle = new TextStyle(Brushes.Blue, null, FontStyle.Underline);
             var tagStyle = new TextStyle(Brushes.Green, null, FontStyle.Bold);
-
             fctbDescription.TextChanged += (s, e) =>
             {
                 e.ChangedRange.ClearStyle(linkStyle);
@@ -211,18 +248,16 @@ namespace WindowsFormsApp4
                 e.ChangedRange.SetStyle(tagStyle, @"#\w+");
             };
 
-            // Aggiungi controlli al pannello info
             infoPanel.Controls.Add(lblInfo);
             infoPanel.Controls.Add(link);
             infoPanel.Controls.Add(fctbDescription);
-
-            // Aggiungi immagine e info al pannello video
-            videoPanel.Controls.Add(pb);
             videoPanel.Controls.Add(infoPanel);
 
-            // Aggiungi al pannello principale
             flowPanel.Controls.Add(videoPanel);
         }
+
+
+
 
 
         private async Task<Image> ScaricaMiniaturaAsync(string url)
