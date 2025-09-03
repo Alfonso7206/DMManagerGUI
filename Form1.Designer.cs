@@ -35,7 +35,7 @@
             this.infoYtdlp = new System.Windows.Forms.ToolStripMenuItem();
             this.mostraFormati = new System.Windows.Forms.ToolStripMenuItem();
             this.BtnScaricaTool = new System.Windows.Forms.ToolStripMenuItem();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.btnClearLink = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.menuStrip.SuspendLayout();
@@ -61,7 +61,7 @@
             this.BtnApriLink.Name = "BtnApriLink";
             this.BtnApriLink.Size = new System.Drawing.Size(149, 25);
             this.BtnApriLink.TabIndex = 4;
-            this.BtnApriLink.Text = "Video Info";
+            this.BtnApriLink.Text = "🎬 Video Info";
             this.BtnApriLink.Click += new System.EventHandler(this.BtnApriLink_Click);
             // 
             // DMListBox
@@ -83,17 +83,17 @@
             this.DMCopyButton.Name = "DMCopyButton";
             this.DMCopyButton.Size = new System.Drawing.Size(149, 25);
             this.DMCopyButton.TabIndex = 3;
-            this.DMCopyButton.Text = "Copy to list";
+            this.DMCopyButton.Text = "📄 Copy to list";
             this.DMCopyButton.UseVisualStyleBackColor = true;
             this.DMCopyButton.Click += new System.EventHandler(this.DMCopyButton_Click);
             // 
             // lblProgress
             // 
             this.lblProgress.AutoSize = true;
-            this.lblProgress.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblProgress.Location = new System.Drawing.Point(6, 15);
+            this.lblProgress.Font = new System.Drawing.Font("Bahnschrift", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProgress.Location = new System.Drawing.Point(6, 13);
             this.lblProgress.Name = "lblProgress";
-            this.lblProgress.Size = new System.Drawing.Size(0, 15);
+            this.lblProgress.Size = new System.Drawing.Size(0, 18);
             this.lblProgress.TabIndex = 5;
             // 
             // BtnDownloadTutti
@@ -103,7 +103,7 @@
             this.BtnDownloadTutti.Name = "BtnDownloadTutti";
             this.BtnDownloadTutti.Size = new System.Drawing.Size(149, 25);
             this.BtnDownloadTutti.TabIndex = 6;
-            this.BtnDownloadTutti.Text = "Download All";
+            this.BtnDownloadTutti.Text = "📥 Download All";
             this.BtnDownloadTutti.UseVisualStyleBackColor = true;
             this.BtnDownloadTutti.Click += new System.EventHandler(this.BtnDownloadTutti_Click);
             // 
@@ -114,17 +114,18 @@
             this.BtnDownloadSelezionati.Name = "BtnDownloadSelezionati";
             this.BtnDownloadSelezionati.Size = new System.Drawing.Size(149, 25);
             this.BtnDownloadSelezionati.TabIndex = 7;
-            this.BtnDownloadSelezionati.Text = "Download Select";
+            this.BtnDownloadSelezionati.Text = "📥 Download Select";
             this.BtnDownloadSelezionati.UseVisualStyleBackColor = true;
             this.BtnDownloadSelezionati.Click += new System.EventHandler(this.BtnDownloadSelezionati_Click);
             // 
             // BtnKill
             // 
-            this.BtnKill.Location = new System.Drawing.Point(519, 494);
+            this.BtnKill.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.BtnKill.Location = new System.Drawing.Point(568, 482);
             this.BtnKill.Name = "BtnKill";
-            this.BtnKill.Size = new System.Drawing.Size(149, 25);
+            this.BtnKill.Size = new System.Drawing.Size(100, 40);
             this.BtnKill.TabIndex = 8;
-            this.BtnKill.Text = "Stop";
+            this.BtnKill.Text = "⛔ Stop";
             this.BtnKill.UseVisualStyleBackColor = true;
             this.BtnKill.Click += new System.EventHandler(this.BtnKill_Click);
             // 
@@ -133,19 +134,19 @@
             this.btnSelezionaCartella.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSelezionaCartella.Location = new System.Drawing.Point(12, 129);
             this.btnSelezionaCartella.Name = "btnSelezionaCartella";
-            this.btnSelezionaCartella.Size = new System.Drawing.Size(149, 25);
+            this.btnSelezionaCartella.Size = new System.Drawing.Size(110, 25);
             this.btnSelezionaCartella.TabIndex = 9;
-            this.btnSelezionaCartella.Text = "Select folder";
+            this.btnSelezionaCartella.Text = "📂 Select folder";
             this.btnSelezionaCartella.Click += new System.EventHandler(this.btnSelezionaCartella_Click);
             // 
             // btnApriCartella
             // 
             this.btnApriCartella.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnApriCartella.Location = new System.Drawing.Point(167, 129);
+            this.btnApriCartella.Location = new System.Drawing.Point(128, 129);
             this.btnApriCartella.Name = "btnApriCartella";
-            this.btnApriCartella.Size = new System.Drawing.Size(149, 25);
+            this.btnApriCartella.Size = new System.Drawing.Size(110, 25);
             this.btnApriCartella.TabIndex = 10;
-            this.btnApriCartella.Text = "Open Folder";
+            this.btnApriCartella.Text = "📂 Open Folder";
             this.btnApriCartella.Click += new System.EventHandler(this.btnApriCartella_Click);
             // 
             // lblDownloadPath
@@ -163,9 +164,10 @@
             // chkPlaylist
             // 
             this.chkPlaylist.AutoSize = true;
-            this.chkPlaylist.Location = new System.Drawing.Point(607, 184);
+            this.chkPlaylist.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkPlaylist.Location = new System.Drawing.Point(605, 184);
             this.chkPlaylist.Name = "chkPlaylist";
-            this.chkPlaylist.Size = new System.Drawing.Size(61, 17);
+            this.chkPlaylist.Size = new System.Drawing.Size(62, 17);
             this.chkPlaylist.TabIndex = 12;
             this.chkPlaylist.Text = "Playlist";
             this.chkPlaylist.UseVisualStyleBackColor = true;
@@ -189,19 +191,20 @@
             // btnListClear
             // 
             this.btnListClear.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnListClear.Location = new System.Drawing.Point(322, 129);
+            this.btnListClear.Location = new System.Drawing.Point(363, 129);
             this.btnListClear.Name = "btnListClear";
-            this.btnListClear.Size = new System.Drawing.Size(149, 25);
+            this.btnListClear.Size = new System.Drawing.Size(110, 25);
             this.btnListClear.TabIndex = 14;
-            this.btnListClear.Text = "Clear list";
+            this.btnListClear.Text = "🗑️ Clear list";
             this.btnListClear.Click += new System.EventHandler(this.btnListClear_Click);
             // 
             // lblResetArgs
             // 
             this.lblResetArgs.AutoSize = true;
-            this.lblResetArgs.Location = new System.Drawing.Point(574, 185);
+            this.lblResetArgs.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblResetArgs.Location = new System.Drawing.Point(572, 182);
             this.lblResetArgs.Name = "lblResetArgs";
-            this.lblResetArgs.Size = new System.Drawing.Size(19, 13);
+            this.lblResetArgs.Size = new System.Drawing.Size(27, 17);
             this.lblResetArgs.TabIndex = 15;
             this.lblResetArgs.Text = "🔄";
             this.lblResetArgs.Click += new System.EventHandler(this.label1_Click);
@@ -232,7 +235,7 @@
             // cmbFormato
             // 
             this.cmbFormato.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbFormato.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.cmbFormato.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbFormato.FormattingEnabled = true;
             this.cmbFormato.Location = new System.Drawing.Point(435, 179);
             this.cmbFormato.Name = "cmbFormato";
@@ -246,7 +249,7 @@
             this.MSAggiornaYtdlp});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(687, 24);
+            this.menuStrip.Size = new System.Drawing.Size(678, 24);
             this.menuStrip.TabIndex = 19;
             this.menuStrip.Text = "menuStrip1";
             this.menuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip_ItemClicked);
@@ -259,21 +262,21 @@
             this.mostraFormati,
             this.BtnScaricaTool});
             this.MSAggiornaYtdlp.Name = "MSAggiornaYtdlp";
-            this.MSAggiornaYtdlp.Size = new System.Drawing.Size(89, 20);
-            this.MSAggiornaYtdlp.Text = "Opzioni Extra";
+            this.MSAggiornaYtdlp.Size = new System.Drawing.Size(75, 20);
+            this.MSAggiornaYtdlp.Text = "⚙️ Opzioni";
             // 
             // aggiornaYtdlp
             // 
             this.aggiornaYtdlp.Name = "aggiornaYtdlp";
             this.aggiornaYtdlp.Size = new System.Drawing.Size(180, 22);
-            this.aggiornaYtdlp.Text = "Aggiorna yt-dlp";
+            this.aggiornaYtdlp.Text = "♻️ Aggiorna yt-dlp";
             this.aggiornaYtdlp.Click += new System.EventHandler(this.aggiornaYtdlpToolStripMenuItem1_Click);
             // 
             // infoYtdlp
             // 
             this.infoYtdlp.Name = "infoYtdlp";
             this.infoYtdlp.Size = new System.Drawing.Size(180, 22);
-            this.infoYtdlp.Text = "Info yt-dlp";
+            this.infoYtdlp.Text = "❓ Info yt-dlp";
             this.infoYtdlp.Click += new System.EventHandler(this.infoYtdlp_Click);
             // 
             // mostraFormati
@@ -290,18 +293,20 @@
             this.BtnScaricaTool.Text = "Scarica Binary";
             this.BtnScaricaTool.Click += new System.EventHandler(this.BtnScaricaTool_Click);
             // 
-            // progressBar1
+            // btnClearLink
             // 
-            this.progressBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.progressBar1.Location = new System.Drawing.Point(0, 530);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(687, 10);
-            this.progressBar1.TabIndex = 20;
+            this.btnClearLink.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClearLink.Location = new System.Drawing.Point(244, 129);
+            this.btnClearLink.Name = "btnClearLink";
+            this.btnClearLink.Size = new System.Drawing.Size(110, 25);
+            this.btnClearLink.TabIndex = 20;
+            this.btnClearLink.Text = "🗑️ Clear link";
+            this.btnClearLink.Click += new System.EventHandler(this.btnClearLink_Click);
             // 
             // Form1
             // 
-            this.ClientSize = new System.Drawing.Size(687, 540);
-            this.Controls.Add(this.progressBar1);
+            this.ClientSize = new System.Drawing.Size(678, 526);
+            this.Controls.Add(this.btnClearLink);
             this.Controls.Add(this.cmbFormato);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.groupBox1);
@@ -363,6 +368,6 @@
         private System.Windows.Forms.ToolStripMenuItem infoYtdlp;
         private System.Windows.Forms.ToolStripMenuItem mostraFormati;
         private System.Windows.Forms.ToolStripMenuItem BtnScaricaTool;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Button btnClearLink;
     }
 }

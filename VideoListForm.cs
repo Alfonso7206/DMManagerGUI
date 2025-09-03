@@ -199,7 +199,7 @@ namespace WindowsFormsApp4
                 Font = new Font("Segoe UI", 10),
                 Text =
                     $"🎬 Titolo: {(videoInfo.title != null ? (string)videoInfo.title : "N/D")}\n" +
-                    $"👤 Uploader: {(videoInfo.uploader != null ? (string)videoInfo.uploader : "N/D")}\n" +
+                    $"💂 Uploader: {(videoInfo.uploader != null ? (string)videoInfo.uploader : "N/D")}\n" +
                     $"📅 Data upload: {uploadDateText}\n" +
                     $"⏱ Durata: {(videoInfo.duration_string != null ? (string)videoInfo.duration_string : "N/D")}\n" +
                     $"👁 Views: {(videoInfo.view_count != null ? videoInfo.view_count.ToString() : "0")}\n" +

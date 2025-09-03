@@ -46,13 +46,79 @@ namespace WindowsFormsApp4
             DMListBox.SelectionMode = SelectionMode.MultiExtended;
             this.FormClosing += Form1_FormClosing; // <- associa l'evento
             // 🔹 ComboBox Arguments
-            cmbFormato.Items.Add("Video MP4");
-            cmbFormato.Items.Add("Solo Video");
-            cmbFormato.Items.Add("Audio MP3");
-            cmbFormato.Items.Add("Audio M4A");
+            cmbFormato.Items.Add("🎬 Video MP4");
+            cmbFormato.Items.Add("🎬 Solo Video");
+            cmbFormato.Items.Add("🎵 Audio MP3");
+            cmbFormato.Items.Add("🎵 Audio M4A");
             cmbFormato.SelectedIndex = 0; // default Video MP4
-            // 🔹 ComboBox Arguments fine
+                                          // 🔹 ComboBox Arguments fine
+
+
+            txtUrl.AllowDrop = true;
+            txtUrl.DragEnter += TxtUrl_DragEnter;
+            txtUrl.DragDrop += TxtUrl_DragDrop;
         }
+
+        private void TxtUrl_DragEnter(object sender, DragEventArgs e)
+        {
+            // Accetta solo file
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Copy;
+            else
+                e.Effect = DragDropEffects.None;
+        }
+        private void TxtUrl_DragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                if (files.Length > 0)
+                {
+                    string filePath = files[0];
+                    if (Path.GetExtension(filePath).Equals(".txt", StringComparison.OrdinalIgnoreCase))
+                    {
+                        try
+                        {
+                            // Legge tutte le righe
+                            string[] lines = File.ReadAllLines(filePath);
+
+                            // Filtra solo righe che sembrano URL
+                            var urls = new List<string>();
+                            foreach (string line in lines)
+                            {
+                                string trimmed = line.Trim();
+                                if (trimmed.StartsWith("http://") || trimmed.StartsWith("https://"))
+                                    urls.Add(trimmed);
+                            }
+
+                            // Inserisce i link nella TextBox (puoi anche concatenarli separati da virgola o newline)
+                            txtUrl.Text = string.Join(Environment.NewLine, urls);
+
+                            if (urls.Count == 0)
+                                MessageBox.Show("Nessun link trovato nel file.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Errore durante la lettura del file: " + ex.Message, "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Trascina un file di testo (.txt).", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+
         private void SalvaLink()
         {
             var links = DMListBox.Items.Cast<string>().ToList();
@@ -404,24 +470,23 @@ private void btnSelezionaCartella_Click(object sender, EventArgs e)
                 MessageBox.Show("Errore: " + ex.Message);
             }
         }
-
             private void cmbFormato_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (cmbFormato.SelectedItem.ToString())
             {
-                case "Video MP4":
+                case "🎬 Video MP4":
                     txtArgs.Text = "-f bestvideo[ext=mp4][vcodec^=avc]+bestaudio[ext=m4a]/bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio/best[ext=mp4]/best";
                     break;
 
-                case "Solo Video":
+                case "🎬 Solo Video":
                     txtArgs.Text = "-f bestvideo[ext=mp4][vcodec^=avc]/bestvideo[ext=mp4]/bestvideo";
                     break;
 
-                case "Audio MP3":
+                case "🎵 Audio MP3":
                     txtArgs.Text = "-x --audio-format mp3 --audio-quality 192 --embed-thumbnail";
                     break;
 
-                case "Audio M4A":
+                case "🎵 Audio M4A":
                     txtArgs.Text = "-f bestaudio[ext=m4a] --embed-thumbnail";
                     break;
             }
@@ -554,9 +619,9 @@ private void btnSelezionaCartella_Click(object sender, EventArgs e)
 
                         if (canReportProgress)
                         {
-                            int percent = (int)((totalRead * 100) / totalBytes);
+                            int percent = (int)(totalRead * 100 / totalBytes);
                             int progressBars = (percent * barWidth) / 100;
-                            string bar = "[" + new string('#', progressBars) + new string('-', barWidth - progressBars) + $"] {percent}%";
+                            string bar = "" + new string('█', progressBars) + new string('░', barWidth - progressBars) + $" {percent}%";
                             lbl.Text = $"Scaricando {Path.GetFileName(outputPath)} {bar}";
                             lbl.Refresh();
                         }
@@ -564,9 +629,6 @@ private void btnSelezionaCartella_Click(object sender, EventArgs e)
                 }
             }
         }
-
-
-
         private async void BtnScaricaTool_Click(object sender, EventArgs e)
         {
             string appPath = Application.StartupPath;
@@ -639,6 +701,10 @@ private void btnSelezionaCartella_Click(object sender, EventArgs e)
             }
         }
 
+        private void btnClearLink_Click(object sender, EventArgs e)
+        {
+            txtUrl.Clear();
+        }
     }
 
 }
