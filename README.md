@@ -8,4 +8,4 @@
 #### I didn't add any special options but it's the best I've used ####
 #### it's very fast ####
 #### You can download binary files from the menu ####
-#### Have fun ####
+#### Have fun 👍 ####
